@@ -19,4 +19,5 @@ void	put_pointer_at_start(t_node **stack);
 void    s_stack(t_node **stack);
 void    r_stack(t_node **stack);
 void    rr_stack(t_node **stack);
+void    p_stack(t_node **stack_one, t_node **stack_two);
 #endif
