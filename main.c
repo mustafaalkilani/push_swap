@@ -2,7 +2,7 @@
 #include "push_swap.h"
 #include "libft/libft.h"
 
-int is_sorted(char **argv)
+int is_sorted(char **argv) // implement this function later 
 {
     ft_printf("Checking if sorted:\n");
     if (argv != NULL)
