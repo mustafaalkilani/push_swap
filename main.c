@@ -2,13 +2,19 @@
 #include "push_swap.h"
 #include "libft/libft.h"
 
-int is_sorted(char **argv) // implement this function later 
+int is_sorted(char **argv)
 {
-    ft_printf("Checking if sorted:\n");
-    if (argv != NULL)
-        return (1);
-    return (0);
-} 
+    int i;
+
+    i = 0;
+    while (argv[i] && argv[i + 1])
+    {
+        if (ft_atoi(argv[i]) > ft_atoi(argv[i + 1]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
 
 int main(int argc, char **argv)
 {
@@ -24,5 +30,6 @@ int main(int argc, char **argv)
     if (is_sorted(argv))
         return (0);
     init_stack(&A, argv);
+    push_swap(&A, &B);
     return (0);
 }
