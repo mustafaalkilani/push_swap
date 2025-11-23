@@ -19,3 +19,9 @@ void	rr_stack(t_node **stack)
 	second_last->next = NULL;
 	*stack = last;
 }
+
+void    rrr(t_node **a, t_node **b)
+{
+    rr_stack(a);
+    rr_stack(b);
+}

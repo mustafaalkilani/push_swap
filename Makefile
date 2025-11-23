@@ -1,7 +1,7 @@
 NAME = push_swap
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRCS = main.c
+SRCS = main.c ft_atol.c commands/commands.c commands/commands_two.c
 OBJS = $(SRCS:.c=.o)
 ft_printf_DIR = ft_printf
 ft_printf_LIB = $(ft_printf_DIR)/libftprintf.a
