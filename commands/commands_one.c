@@ -50,19 +50,19 @@ void    rr(t_node **a, t_node **b)
     r_stack(b);
 }
 
-void    p_stack(t_node **stack_one, t_node **stack_two)
+void    p_stack(t_node **stack_to, t_node **stack_from)
 {
     t_node *temp;
     
-    if (!stack_one || !*stack_one)
+    if (!stack_from || !*stack_from)
         return;
-    temp = *stack_one;
-    *stack_one = (*stack_one)->next;
-    if (*stack_one)
-        (*stack_one)->prev = NULL;
+    temp = *stack_from;
+    *stack_from = (*stack_from)->next;
+    if (*stack_from)
+        (*stack_from)->prev = NULL;
     temp->prev = NULL;
-    temp->next = *stack_two;
-    if (*stack_two)
-        (*stack_two)->prev = temp;
-    *stack_two = temp;
+    temp->next = *stack_to;
+    if (*stack_to)
+        (*stack_to)->prev = temp;
+    *stack_to = temp;
 }
