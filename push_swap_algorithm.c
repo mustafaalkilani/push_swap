@@ -31,17 +31,17 @@ void sort_last_three(t_node **stack)
         rra(stack);
 }
 
-t_node  *find_target_node(t_node *a, int value_from_b)
+t_node  *find_target_node(t_node *a, t_node **from_b)
 {
     t_node  *target;
     t_node  *temp;
-    
+
     target = NULL;
     temp = a;
     
     while (temp)
     {
-        if (temp->value > value_from_b)
+        if (temp->value > (*from_b)->value)
         {
             if (target == NULL || temp->value < target->value)
                 target = temp;
