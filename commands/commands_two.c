@@ -1,6 +1,7 @@
 #include "../push_swap.h"
+#include "../ft_printf/ft_printf.h"
 
-void	rr_stack(t_node **stack)
+void	rr_stack(t_node **stack, char *operation)
 {
 	t_node	*first;
 	t_node	*second_last;
@@ -18,10 +19,13 @@ void	rr_stack(t_node **stack)
 	last->prev = NULL;
 	second_last->next = NULL;
 	*stack = last;
+	if (operation)
+		ft_printf("%s\n", operation);
 }
 
 void    rrr(t_node **a, t_node **b)
 {
-    rr_stack(a);
-    rr_stack(b);
+    rr_stack(a, NULL);
+    rr_stack(b, NULL);
+	ft_printf("rrr\n");
 }

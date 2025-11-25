@@ -2,11 +2,12 @@
 #include "libft/libft.h"
 #include "push_swap.h"
 
-static void	free_and_return(t_node *new_node)
+static void free_and_exit(t_node **stack, t_node *new_node)
 {
-	free(new_node);
-	ft_printf("Error\n");
-	return ;
+    free_stack(stack);
+    free(new_node);
+    ft_printf("Error\n");
+    return ;
 }
 
 static int	handle_repetitions(t_node *stack, int value)
@@ -30,10 +31,21 @@ static int	handle_overflow(long value)
 	return (1);
 }
 
-void	put_pointer_at_start(t_node **stack)
+void	put_pointer_at_start_and_asign_indexs(t_node **stack)
 {
+    int index;
+
+    index = 0;
 	while ((*stack)->prev)
 		*stack = (*stack)->prev;
+    while (*stack)
+    {
+        (*stack)->index = index;
+        index++;
+        *stack = (*stack)->next;
+    }
+    while ((*stack) && (*stack)->prev)
+        *stack = (*stack)->prev;
 }
 
 void	init_stack(t_node **stack, char **argv)
@@ -46,12 +58,12 @@ void	init_stack(t_node **stack, char **argv)
 	{
 		new_node = (t_node *)malloc(sizeof(t_node));
 		if (!new_node)
-			return (free_and_return(new_node));
+			return (free_and_exit(stack, new_node));
 		if (!handle_overflow(ft_atol(argv[i])))
-			return (free_and_return(new_node));
+			return (free_and_exit(stack, new_node));
 		new_node->value = ft_atoi(argv[i]);
 		if (!handle_repetitions(*stack, new_node->value))
-			return (free_and_return(new_node));
+			return (free_and_exit(stack, new_node));
 		new_node->next = NULL;
 		if (*stack == NULL)
 			*stack = new_node;
@@ -62,5 +74,5 @@ void	init_stack(t_node **stack, char **argv)
 			*stack = new_node;
 		}
 	}
-	put_pointer_at_start(stack);
+	put_pointer_at_start_and_asign_indexs(stack);
 }
