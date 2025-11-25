@@ -31,12 +31,12 @@ void sort_last_three(t_node **stack)
         rra(stack);
 }
 
-t_node  *find_target_node(t_node *a, t_node **from_b)
+void    find_target_node(t_node *a, t_node **from_b, t_node **target_nodes)
 {
     t_node  *target;
     t_node  *temp;
 
-    target = NULL;
+    target = *target_nodes;
     temp = a;
     
     while (temp)
@@ -48,7 +48,6 @@ t_node  *find_target_node(t_node *a, t_node **from_b)
         }
         temp = temp->next;
     }
-    return (target);
 }
 
 void push_swap(t_node **a, t_node **b)
