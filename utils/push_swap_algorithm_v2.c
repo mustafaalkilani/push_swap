@@ -45,11 +45,22 @@ int get_stack_size(t_node *stack)
     return size;
 }
 
-void    rotate_target_to_top(t_node **a, t_node *target, int size_a)
+void rotate_target_to_top(t_node **a, t_node *target, int size_a)
 {
-    while ((*a) != target)
+    t_node *target_in_a;
+    
+    // Find the actual node in stack A with the target value
+    target_in_a = *a;
+    while (target_in_a && target_in_a->value != target->value)
+        target_in_a = target_in_a->next;
+    
+    if (!target_in_a)
+        return;  // Target not found
+    
+    // Now rotate until target_in_a is at top
+    while ((*a) != target_in_a)
     {
-        if (target->index <= size_a / 2)
+        if (target_in_a->index <= size_a / 2)
             r_stack(a, "ra");
         else
             rr_stack(a, "rra");

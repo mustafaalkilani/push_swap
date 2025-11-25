@@ -83,16 +83,40 @@ void    to_the_top_cost(t_node **stack)
     }
 }
 
-void    calculate_total_costs(t_node **b, t_node **target_nodes)
+void calculate_total_costs(t_node **b, t_node **target_nodes)
 {
     t_node *temp_b;
     t_node *temp_target;
+    int size_b;
+    int size_target;
  
     temp_b = *b;
     temp_target = *target_nodes;
+    size_b = get_stack_size(*b);
+    size_target = get_stack_size(*target_nodes);
+    
     while(temp_b && temp_target)
     {
-        temp_b->final_to_top_cost = temp_b->to_top_cost + temp_target->to_top_cost;
+        int cost_b = temp_b->to_top_cost;
+        int cost_target = temp_target->to_top_cost;
+        
+        // Check if both rotate in same direction
+        int both_rotate_up = (temp_b->index <= size_b / 2) && 
+                             (temp_target->index <= size_target / 2);
+        int both_rotate_down = (temp_b->index > size_b / 2) && 
+                               (temp_target->index > size_target / 2);
+        
+        if (both_rotate_up || both_rotate_down)
+        {
+            // Can use rr or rrr - cost is the maximum of the two
+            temp_b->final_to_top_cost = (cost_b > cost_target) ? cost_b : cost_target;
+        }
+        else
+        {
+            // Must rotate separately - cost is the sum
+            temp_b->final_to_top_cost = cost_b + cost_target;
+        }
+        
         temp_b = temp_b->next;
         temp_target = temp_target->next;
     }
@@ -139,7 +163,6 @@ void push_swap(t_node **a, t_node **b)
     {
         p_stack(b, a, "pb");
     }
-    sort_last_three(a);
     while (*b)
     {
         put_pointer_at_start_and_asign_indexs(a);

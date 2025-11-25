@@ -31,48 +31,64 @@ static int	handle_overflow(long value)
 	return (1);
 }
 
-void	put_pointer_at_start_and_asign_indexs(t_node **stack)
+void put_pointer_at_start_and_asign_indexs(t_node **stack)
 {
-    int index;
+    int     index;
+    t_node  *temp;
 
+    if (!stack || !*stack)
+        return;
+    
     index = 0;
-	while ((*stack)->prev)
-		*stack = (*stack)->prev;
-    while (*stack)
-    {
-        (*stack)->index = index;
-        index++;
-        *stack = (*stack)->next;
-    }
-    while ((*stack) && (*stack)->prev)
+    
+    // Move to start
+    while ((*stack)->prev)
         *stack = (*stack)->prev;
+    
+    // Assign indices using temp pointer
+    temp = *stack;
+    while (temp)
+    {
+        temp->index = index;
+        index++;
+        temp = temp->next;
+    }
+    
+    // *stack is already at the start, no need to move back!
 }
 
-void	init_stack(t_node **stack, char **argv)
+void init_stack(t_node **stack, char **argv)
 {
-	int		i;
-	t_node	*new_node;
-
-	i = -1;
-	while (argv[++i])
-	{
-		new_node = (t_node *)malloc(sizeof(t_node));
-		if (!new_node)
-			return (free_and_exit(stack, new_node));
-		if (!handle_overflow(ft_atol(argv[i])))
-			return (free_and_exit(stack, new_node));
-		new_node->value = ft_atoi(argv[i]);
-		if (!handle_repetitions(*stack, new_node->value))
-			return (free_and_exit(stack, new_node));
-		new_node->next = NULL;
-		if (*stack == NULL)
-			*stack = new_node;
-		else
-		{
-			(*stack)->next = new_node;
-			new_node->prev = *stack;
-			*stack = new_node;
-		}
-	}
-	put_pointer_at_start_and_asign_indexs(stack);
+    int     i;
+    t_node  *new_node;
+    i = -1;
+    while (argv[++i])
+    {        
+        new_node = (t_node *)malloc(sizeof(t_node));
+        if (!new_node)
+            free_and_exit(stack, NULL);
+        if (!handle_overflow(ft_atol(argv[i])))
+        {
+            free_and_exit(stack, new_node);
+        }
+        new_node->value = ft_atoi(argv[i]);        
+        if (!handle_repetitions(*stack, new_node->value))
+        {
+            free_and_exit(stack, new_node);
+        }
+        new_node->next = NULL;
+        new_node->prev = NULL;
+        
+        if (*stack == NULL)
+        {
+            *stack = new_node;
+        }
+        else
+        {
+            (*stack)->next = new_node;
+            new_node->prev = *stack;
+            *stack = new_node;
+        }
+    }
+    put_pointer_at_start_and_asign_indexs(stack);
 }
