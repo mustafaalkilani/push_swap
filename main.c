@@ -2,16 +2,18 @@
 #include "push_swap.h"
 #include "libft/libft.h"
 
-int is_sorted(char **argv)
+int is_sorted(t_node **stack)
 {
-    int i;
+    t_node  *current;
 
-    i = 0;
-    while (argv[i] && argv[i + 1])
+    if (!stack || !*stack)
+        return (1);
+    current = *stack;
+    while (current->next)
     {
-        if (ft_atoi(argv[i]) > ft_atoi(argv[i + 1]))
+        if (current->value > current->next->value)
             return (0);
-        i++;
+        current = current->next;
     }
     return (1);
 }
@@ -64,15 +66,14 @@ int main(int argc, char **argv)
     {
         args = argv + 1;
     }
-    
-    if (is_sorted(args))
+    init_stack(&A, args);
+    if (is_sorted(&A))
     {
         if (should_free_argv)
             free_split(args);
         return (0);
     }
     
-    init_stack(&A, args);
     push_swap(&A, &B);
     free_stack(&A);
     free_stack(&B);
