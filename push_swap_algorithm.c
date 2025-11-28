@@ -38,13 +38,16 @@ void find_target_node(t_node **a, t_node **b, t_node **target_nodes)
     t_node  *target;
     t_node  *smallest;
     
+    (void)target_nodes;  // We won't use this anymore
+    
     temp_b = *b;
-    *target_nodes = NULL;
+    
     while (temp_b)
     {
         temp_a = *a;
         target = NULL;
         smallest = *a;
+        
         while (temp_a)
         {
             if (temp_a->value < smallest->value)
@@ -57,89 +60,135 @@ void find_target_node(t_node **a, t_node **b, t_node **target_nodes)
             }
             temp_a = temp_a->next;
         }
+        
         if (!target)
             target = smallest;
-            
-        ft_node_add_back(target_nodes, ft_node_new(target->value));
+        
+        // Store the target VALUE in B's node
+        temp_b->target = target->value;
+        
         temp_b = temp_b->next;
     }
-    put_pointer_at_start_and_asign_indexs(target_nodes);
 }
 
-void    to_the_top_cost(t_node **stack)
+void to_the_top_cost(t_node **stack)
 {
-    int number_of_nodes;
-    t_node *temp;
+    t_node  *current;
+    int     size;
+    int     cost;
 
-    number_of_nodes = get_stack_size(*stack);
-    temp = *stack;
-    while (temp)
-    {
-        if (temp->index <= number_of_nodes / 2)
-            temp->to_top_cost = temp->index;
-        else
-            temp->to_top_cost = (number_of_nodes - temp->index);
-        temp = temp->next;
-    }
-}
-
-void calculate_total_costs(t_node **b, t_node **target_nodes)
-{
-    t_node *temp_b;
-    t_node *temp_target;
-    int size_b;
-    int size_target;
- 
-    temp_b = *b;
-    temp_target = *target_nodes;
-    size_b = get_stack_size(*b);
-    size_target = get_stack_size(*target_nodes);
+    if (!stack || !*stack)
+        return;
     
-    while(temp_b && temp_target)
+    current = *stack;
+    size = get_stack_size(*stack);
+    
+    while (current)
     {
-        int cost_b = temp_b->to_top_cost;
-        int cost_target = temp_target->to_top_cost;
-        
-        // Check if both rotate in same direction
-        int both_rotate_up = (temp_b->index <= size_b / 2) && 
-                             (temp_target->index <= size_target / 2);
-        int both_rotate_down = (temp_b->index > size_b / 2) && 
-                               (temp_target->index > size_target / 2);
-        
-        if (both_rotate_up || both_rotate_down)
+        // Cost to rotate this element to the top
+        if (current->index <= size / 2)
         {
-            // Can use rr or rrr - cost is the maximum of the two
-            temp_b->final_to_top_cost = (cost_b > cost_target) ? cost_b : cost_target;
+            // Closer to top: rotate up (positive cost)
+            cost = current->index;
         }
         else
         {
-            // Must rotate separately - cost is the sum
-            temp_b->final_to_top_cost = cost_b + cost_target;
+            // Closer to bottom: rotate down (negative cost)
+            cost = current->index - size;
         }
         
-        temp_b = temp_b->next;
-        temp_target = temp_target->next;
+        current->to_top_cost = cost;
+        current = current->next;
+    }
+}
+
+t_node *find_node_by_value(t_node *stack, int value)
+{
+    while (stack)
+    {
+        if (stack->value == value)
+            return (stack);
+        stack = stack->next;
+    }
+    return (NULL);
+}
+
+void calculate_total_costs(t_node *b, t_node *a)  // Pass A instead of target_nodes!
+{
+    t_node  *current_b;
+    t_node  *target_in_a;
+    int     b_cost;
+    int     a_cost;
+    int     total_cost;
+
+    current_b = b;
+    
+    while (current_b)
+    {
+        b_cost = current_b->to_top_cost;
+        
+        // Find the actual target node in A by value
+        target_in_a = a;
+        while (target_in_a && target_in_a->value != current_b->target)
+            target_in_a = target_in_a->next;
+        
+        if (!target_in_a)
+        {
+            current_b = current_b->next;
+            continue;
+        }
+        
+        a_cost = target_in_a->to_top_cost;
+        
+        // Check if both rotations are in the same direction
+        if ((b_cost > 0 && a_cost > 0) || (b_cost < 0 && a_cost < 0))
+        {
+            // Same direction: simultaneous rotations
+            if (abs(b_cost) > abs(a_cost))
+                total_cost = abs(b_cost);
+            else
+                total_cost = abs(a_cost);
+        }
+        else
+        {
+            // Opposite directions: separate rotations
+            total_cost = abs(b_cost) + abs(a_cost);
+        }
+        
+        current_b->final_to_top_cost = total_cost;
+        current_b = current_b->next;
     }
 }
 
 void final_sort(t_node **a)
 {
-    t_node *smallest;
     t_node *temp;
+    int smallest_value;
     int size;
 
-    smallest = *a;
     temp = *a;
+    smallest_value = (*a)->value;
     size = get_stack_size(*a);
+    
+    // Find smallest value
     while (temp)
     {
-        if (temp->value < smallest->value)
-            smallest = temp;
+        if (temp->value < smallest_value)
+            smallest_value = temp->value;
         temp = temp->next;
     }
-    while ((*a) != smallest)
+    
+    // Rotate until smallest is at top
+    while ((*a)->value != smallest_value)
     {
-        if (smallest->index <= size / 2)
+        put_pointer_at_start_and_asign_indexs(a);  // Update indexes!
+        temp = *a;
+        
+        // Find smallest node again
+        while (temp && temp->value != smallest_value)
+            temp = temp->next;
+            
+        if (temp->index <= size / 2)
             r_stack(a, "ra");
         else
             rr_stack(a, "rra");
@@ -149,35 +198,37 @@ void final_sort(t_node **a)
 void push_swap(t_node **a, t_node **b)
 {
     t_node  *target_nodes;
+    int     size;
 
     target_nodes = NULL;
-    int size = get_stack_size(*a);
-
-    if (size <= 3)
-    {
+    size = get_stack_size(*a);
+    
+    if (size == 2)
+        s_stack(a, "sa");
+    else if (size == 3)
         sort_last_three(a);
-        return;
-    }
-
-    while (get_stack_size(*a) > 3)
+    else
     {
-        p_stack(b, a, "pb");
-    }
-    while (*b)
-    {
-        put_pointer_at_start_and_asign_indexs(a);
-        put_pointer_at_start_and_asign_indexs(b);
+        // CORRECT: Keep 3 elements in A, push the rest to B
+        while (get_stack_size(*a) > 3)  // ✅ Stop when 3 elements remain!
+            p_stack(b, a, "pb");
         
-        find_target_node(a, b, &target_nodes);
-        to_the_top_cost(b);
-        to_the_top_cost(&target_nodes);
-        calculate_total_costs(b, &target_nodes);
-        execute_cheapest_move(a, b, &target_nodes);
-
-        free_stack(&target_nodes);
+        // Sort the 3 remaining elements in A
+        sort_last_three(a);
+        
+        // Now push back from B to A optimally
+        while (*b)
+        {
+            find_target_node(a, b, &target_nodes);
+            to_the_top_cost(a);
+            to_the_top_cost(b);
+            calculate_total_costs(*b, *a);  // ✅ Pass actual stack A, not target_nodes!
+            execute_cheapest_move(a, b);
+        }
+        
+        // Final rotation to get smallest at top
+        final_sort(a);
     }
-    final_sort(a);
 }
-
 // continue this article https://pure-forest.medium.com/push-swap-turk-algorithm-explained-in-6-steps-4c6650a458c0
 

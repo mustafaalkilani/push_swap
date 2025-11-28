@@ -1,36 +1,29 @@
 #include "../push_swap.h"
 
-t_node  *find_cheapest(t_node *b)
+t_node *find_cheapest(t_node *b)
 {
     t_node  *cheapest;
-    t_node  *temp;
+    t_node  *current;
+    int     min_cost;
 
+    if (!b)
+        return (NULL);
+    
     cheapest = b;
-    temp = b;
-    while (temp)
+    min_cost = b->final_to_top_cost;  // ✅ Use final_to_top_cost
+    current = b->next;
+    
+    while (current)
     {
-        if (temp->final_to_top_cost < cheapest->final_to_top_cost)
-            cheapest = temp;
-        temp = temp->next;
+        if (current->final_to_top_cost < min_cost)  // ✅ Use final_to_top_cost
+        {
+            min_cost = current->final_to_top_cost;
+            cheapest = current;
+        }
+        current = current->next;
     }
+    
     return (cheapest);
-}
-
-t_node  *get_target_for_node(t_node *node, t_node *target_nodes, t_node *b)
-{
-    t_node  *temp_target;
-    t_node  *temp_b;
-
-    temp_target = target_nodes;
-    temp_b = b;
-    while (temp_b && temp_target)
-    {
-        if (temp_b == node)
-            return temp_target;
-        temp_b = temp_b->next;
-        temp_target = temp_target->next;
-    }
-    return (NULL);
 }
 
 int get_stack_size(t_node *stack)
@@ -45,52 +38,114 @@ int get_stack_size(t_node *stack)
     return size;
 }
 
-void rotate_target_to_top(t_node **a, t_node *target, int size_a)
+void rotate_target_to_top(t_node **a, int target_value)
 {
-    t_node *target_in_a;
+    t_node  *target_node;
+    int     a_rotate_up;
+
+    if (!a || !*a)
+        return;
     
-    // Find the actual node in stack A with the target value
-    target_in_a = *a;
-    while (target_in_a && target_in_a->value != target->value)
-        target_in_a = target_in_a->next;
+    if ((*a)->value == target_value)
+        return;
     
-    if (!target_in_a)
-        return;  // Target not found
+    // Update indices and find target
+    put_pointer_at_start_and_asign_indexs(a);
     
-    // Now rotate until target_in_a is at top
-    while ((*a) != target_in_a)
+    target_node = *a;
+    while (target_node && target_node->value != target_value)
+        target_node = target_node->next;
+    
+    if (!target_node)
+        return;
+    
+    // Determine direction ONCE
+    a_rotate_up = (target_node->index <= get_stack_size(*a) / 2);
+    
+    // Rotate until target is at top
+    while ((*a)->value != target_value)
     {
-        if (target_in_a->index <= size_a / 2)
+        if (a_rotate_up)
             r_stack(a, "ra");
         else
             rr_stack(a, "rra");
+        
+        put_pointer_at_start_and_asign_indexs(a);
     }
 }
-
-void    execute_cheapest_move(t_node **a, t_node **b, t_node **target_nodes)
+void execute_cheapest_move(t_node **a, t_node **b)
 {
     t_node  *cheapest;
-    t_node  *target;
-    int     size_b;
+    int     cheapest_value;
+    int     target_value;
+    int     b_rotate_up;
+    int     a_rotate_up;
 
-    cheapest = find_cheapest(*b);
-    target = get_target_for_node(cheapest, *target_nodes, *b);
-    if (!target)
+    if (!b || !*b)
         return;
-    size_b = get_stack_size(*b);
-    while (cheapest->index <= size_b / 2 && target->index <= get_stack_size(*a) / 2 
-           && (*b) != cheapest && (*a) != target)
-        rr(a, b);
-    while (cheapest->index > size_b / 2 && target->index > get_stack_size(*a) / 2
-           && (*b) != cheapest && (*a) != target)
-        rrr(a, b);
-    while ((*b) != cheapest)
+    
+    // Find cheapest node ONCE
+    cheapest = find_cheapest(*b);
+    if (!cheapest)
+        return;
+    
+    cheapest_value = cheapest->value;
+    target_value = cheapest->target;
+    
+    // Update indices
+    put_pointer_at_start_and_asign_indexs(a);
+    put_pointer_at_start_and_asign_indexs(b);
+    
+    // Re-find nodes after index update
+    cheapest = *b;
+    while (cheapest && cheapest->value != cheapest_value)
+        cheapest = cheapest->next;
+    
+    t_node *target_node = *a;
+    while (target_node && target_node->value != target_value)
+        target_node = target_node->next;
+    
+    if (!cheapest || !target_node)
+        return;
+    
+    // Determine rotation direction ONCE
+    b_rotate_up = (cheapest->index <= get_stack_size(*b) / 2);
+    a_rotate_up = (target_node->index <= get_stack_size(*a) / 2);
+    
+    // Simultaneous rotations upward (rr)
+    while (b_rotate_up && a_rotate_up && 
+           (*b)->value != cheapest_value && 
+           (*a)->value != target_value)
     {
-        if (cheapest->index <= size_b / 2)
+        rr(a, b);
+        put_pointer_at_start_and_asign_indexs(a);
+        put_pointer_at_start_and_asign_indexs(b);
+    }
+    
+    // Simultaneous rotations downward (rrr)
+    while (!b_rotate_up && !a_rotate_up && 
+           (*b)->value != cheapest_value && 
+           (*a)->value != target_value)
+    {
+        rrr(a, b);
+        put_pointer_at_start_and_asign_indexs(a);
+        put_pointer_at_start_and_asign_indexs(b);
+    }
+    
+    // Rotate B to top
+    while ((*b)->value != cheapest_value)
+    {
+        if (b_rotate_up)
             r_stack(b, "rb");
         else
             rr_stack(b, "rrb");
+        
+        put_pointer_at_start_and_asign_indexs(b);
     }
-    rotate_target_to_top(a, target, get_stack_size(*a));
+    
+    // Rotate target in A to top
+    rotate_target_to_top(a, target_value);
+    
+    // Push from B to A
     p_stack(a, b, "pa");
 }

@@ -12,6 +12,7 @@ typedef struct s_node
     int             index;
     int             to_top_cost;
     int             final_to_top_cost;
+    int             target;
 }               t_node;
 void free_split(char **split);
 void free_stack(t_node **stack);
@@ -29,6 +30,6 @@ void    rr(t_node **a, t_node **b);
 void	ft_node_add_back(t_node **lst, t_node *new);
 t_node	*ft_node_new(int value);
 int get_stack_size(t_node *stack);
-void    execute_cheapest_move(t_node **a, t_node **b, t_node **target_nodes);
+void execute_cheapest_move(t_node **a, t_node **b);
 void push_swap(t_node **a, t_node **b);
 #endif

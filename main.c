@@ -44,26 +44,40 @@ void free_split(char **split)
 int main(int argc, char **argv)
 {
     int     should_free_argv;
+    char    **args;
     t_node  *A;
     t_node  *B;
 
     A = NULL;
     B = NULL;
     should_free_argv = 0;
+    
     if (argc == 1 || argv[1][0] == '\0')
         return (0);
-    else if (argc == 2)
+    
+    if (argc == 2)
     {
-        argv = ft_split(argv[1], ' ');
+        args = ft_split(argv[1], ' ');
         should_free_argv = 1;
     }
-    if (is_sorted(argv))
+    else
+    {
+        args = argv + 1;
+    }
+    
+    if (is_sorted(args))
+    {
+        if (should_free_argv)
+            free_split(args);
         return (0);
-    init_stack(&A, argv);
+    }
+    
+    init_stack(&A, args);
     push_swap(&A, &B);
     free_stack(&A);
     free_stack(&B);
+    
     if (should_free_argv)
-        free_split(argv);
+        free_split(args);
     return (0);
 }
