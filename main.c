@@ -2,21 +2,6 @@
 #include "push_swap.h"
 #include "libft/libft.h"
 
-int is_sorted(t_node **stack)
-{
-    t_node  *current;
-
-    if (!stack || !*stack)
-        return (1);
-    current = *stack;
-    while (current->next)
-    {
-        if (current->value > current->next->value)
-            return (0);
-        current = current->next;
-    }
-    return (1);
-}
 void free_stack(t_node **stack)
 {
     t_node *temp;
@@ -30,7 +15,7 @@ void free_stack(t_node **stack)
         *stack = temp;
     }
 }
-void free_split(char **split)
+static void free_split(char **split)
 {
     int i = 0;
     
@@ -43,42 +28,47 @@ void free_split(char **split)
     }
     free(split);
 }
+
+static int is_sorted(t_node **stack, int should_free_argv, char **argv)
+{
+    t_node  *current;
+
+    if (!stack || !*stack)
+        return (1);
+    current = *stack;
+    while (current->next)
+    {
+        if (current->value > current->next->value)
+            return (0);
+        current = current->next;
+    }
+    if (should_free_argv)
+        free_split(argv);
+    return (1);
+}
 int main(int argc, char **argv)
 {
-    int     should_free_argv;
-    char    **args;
+    int    should_free_argv;
     t_node  *A;
     t_node  *B;
 
     A = NULL;
     B = NULL;
     should_free_argv = 0;
-    
     if (argc == 1 || argv[1][0] == '\0')
         return (0);
-    
     if (argc == 2)
     {
-        args = ft_split(argv[1], ' ');
+        argv = ft_split(argv[1], ' ');
         should_free_argv = 1;
     }
-    else
-    {
-        args = argv + 1;
-    }
-    init_stack(&A, args);
-    if (is_sorted(&A))
-    {
-        if (should_free_argv)
-            free_split(args);
+    init_stack(&A, argv);
+    if (is_sorted(&A, should_free_argv, argv))
         return (0);
-    }
-    
     push_swap(&A, &B);
     free_stack(&A);
     free_stack(&B);
-    
     if (should_free_argv)
-        free_split(args);
+        free_split(argv);
     return (0);
 }

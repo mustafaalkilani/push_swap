@@ -14,7 +14,6 @@ typedef struct s_node
     int             final_to_top_cost;
     int             target;
 }               t_node;
-void free_split(char **split);
 void free_stack(t_node **stack);
 void    init_stack(t_node **a, char ** argv);
 void    s_stack(t_node **stack, char *operation);

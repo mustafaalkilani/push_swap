@@ -2,10 +2,12 @@
 #include "libft/libft.h"
 #include "push_swap.h"
 
-static void free_and_exit(t_node **stack)
+static void free_and_exit(t_node **stack, t_node *new_node)
 {
     t_node *temp;
 
+    if (new_node)
+        free(new_node);
     while (*stack)
     {
         temp = *stack;
@@ -48,23 +50,16 @@ void put_pointer_at_start_and_asign_indexs(t_node **stack)
 
     if (!stack || !*stack)
         return;
-    
-    index = 0;
-    
-    // Move to start
+    index = 0;    
     while ((*stack)->prev)
         *stack = (*stack)->prev;
-    
-    // Assign indices using temp pointer
     temp = *stack;
     while (temp)
     {
         temp->index = index;
         index++;
         temp = temp->next;
-    }
-    
-    // *stack is already at the start, no need to move back!
+    }    
 }
 
 void init_stack(t_node **stack, char **argv)
@@ -76,27 +71,16 @@ void init_stack(t_node **stack, char **argv)
     {        
         new_node = (t_node *)malloc(sizeof(t_node));
         if (!new_node)
-        {
-            free(new_node);
-            return (free_and_exit(stack));
-        }
+            return (free_and_exit(stack, new_node));
         if (!handle_overflow(ft_atol(argv[i])))
-        {
-            free(new_node);
-            return (free_and_exit(stack));
-        }
+            return (free_and_exit(stack, new_node));
         new_node->value = ft_atoi(argv[i]);        
         if (!handle_repetitions(*stack, new_node->value))
-        {
-            free(new_node);
-            return (free_and_exit(stack));
-        }        new_node->next = NULL;
+            return (free_and_exit(stack, new_node));        
+        new_node->next = NULL;
         new_node->prev = NULL;
-        
         if (*stack == NULL)
-        {
             *stack = new_node;
-        }
         else
         {
             (*stack)->next = new_node;
