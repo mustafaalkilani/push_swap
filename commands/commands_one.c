@@ -1,5 +1,5 @@
-#include "../push_swap.h"
 #include "../ft_printf/ft_printf.h"
+#include "../push_swap.h"
 
 void	s_stack(t_node **stack, char *operation)
 {
@@ -23,10 +23,10 @@ void	s_stack(t_node **stack, char *operation)
 		ft_printf("%s\n", operation);
 }
 
-void    ss(t_node **a, t_node **b)
+void	ss(t_node **a, t_node **b)
 {
-    s_stack(a, NULL);
-    s_stack(b, NULL);
+	s_stack(a, NULL);
+	s_stack(b, NULL);
 	ft_printf("ss\n");
 }
 
@@ -50,28 +50,28 @@ void	r_stack(t_node **stack, char *operation)
 		ft_printf("%s\n", operation);
 }
 
-void    rr(t_node **a, t_node **b)
+void	rr(t_node **a, t_node **b)
 {
-    r_stack(a, NULL);
-    r_stack(b, NULL);
+	r_stack(a, NULL);
+	r_stack(b, NULL);
 	ft_printf("rr\n");
 }
 
-void    p_stack(t_node **stack_to, t_node **stack_from, char *operation)
+void	p_stack(t_node **stack_to, t_node **stack_from, char *operation)
 {
-    t_node *temp;
-    
-    if (!stack_from || !*stack_from)
-        return;
-    temp = *stack_from;
-    *stack_from = (*stack_from)->next;
-    if (*stack_from)
-        (*stack_from)->prev = NULL;
-    temp->prev = NULL;
-    temp->next = *stack_to;
-    if (*stack_to)
-        (*stack_to)->prev = temp;
-    *stack_to = temp;
+	t_node	*temp;
+
+	if (!stack_from || !*stack_from)
+		return ;
+	temp = *stack_from;
+	*stack_from = (*stack_from)->next;
+	if (*stack_from)
+		(*stack_from)->prev = NULL;
+	temp->prev = NULL;
+	temp->next = *stack_to;
+	if (*stack_to)
+		(*stack_to)->prev = temp;
+	*stack_to = temp;
 	if (operation)
 		ft_printf("%s\n", operation);
 }
