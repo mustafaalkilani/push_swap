@@ -65,6 +65,8 @@ int	main(int argc, char **argv)
 		argv = ft_split(argv[1], ' ');
 		should_free_argv = 1;
 	}
+	if (!should_free_argv)
+		argv++;
 	init_stack(&a, argv);
 	if (is_sorted(&a, should_free_argv, argv))
 		return (0);

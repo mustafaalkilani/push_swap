@@ -20,7 +20,7 @@ void	ft_node_add_back(t_node **lst, t_node *new)
 
 t_node	*ft_node_new(int value)
 {
-	t_node *new_node;
+	t_node	*new_node;
 
 	new_node = (t_node *)malloc(sizeof(t_node));
 	if (!new_node)

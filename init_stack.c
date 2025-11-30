@@ -79,7 +79,6 @@ void	init_stack(t_node **stack, char **argv)
 		if (!handle_repetitions(*stack, new_node->value))
 			return (free_and_exit(stack, new_node));
 		new_node->next = NULL;
-		new_node->prev = NULL;
 		if (*stack == NULL)
 			*stack = new_node;
 		else
