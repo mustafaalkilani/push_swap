@@ -130,6 +130,8 @@ void	push_swap(t_node **a, t_node **b)
 		sort_last_three(a);
 		while (*b)
 		{
+			put_pointer_at_start_and_asign_indexs(a);
+			put_pointer_at_start_and_asign_indexs(b); 
 			find_target_node(a, b);
 			to_the_top_cost(a);
 			to_the_top_cost(b);

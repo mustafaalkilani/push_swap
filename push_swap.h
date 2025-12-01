@@ -40,4 +40,8 @@ void				rotate_both_stacks(t_node **a, t_node **b, t_node *cheapest,
 						t_node *target_node);
 void				execute_cheapest_move(t_node **a, t_node **b);
 void				push_swap(t_node **a, t_node **b);
+void	final_sort(t_node **a);
+void	find_target_node(t_node **a, t_node **b);
+void	calculate_total_costs(t_node *b, t_node *a);
+void	sort_last_three(t_node **a);
 #endif

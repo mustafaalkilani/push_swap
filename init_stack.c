@@ -34,11 +34,9 @@ static int	handle_repetitions(t_node *stack, int value)
 	return (1);
 }
 
-static int	handle_overflow_and_wrong_input(long value)
+static int	handle_overflow(long value)
 {
 	if (value > INT_MAX || value < INT_MIN)
-		return (0);
-	if (!ft_isdigit(value))
 		return (0);
 	return (1);
 }
@@ -65,15 +63,15 @@ void	put_pointer_at_start_and_asign_indexs(t_node **stack)
 void	init_stack(t_node **stack, char **argv)
 {
 	int		i;
-	t_node	*new_node;
 
+	t_node	*new_node;
 	i = -1;
 	while (argv[++i])
 	{
 		new_node = (t_node *)malloc(sizeof(t_node));
 		if (!new_node)
 			return (free_and_exit(stack, new_node));
-		if (!handle_overflow_and_wrong_input(ft_atol(argv[i])))
+		if (!handle_overflow(ft_atol(argv[i])))
 			return (free_and_exit(stack, new_node));
 		new_node->value = ft_atoi(argv[i]);
 		if (!handle_repetitions(*stack, new_node->value))

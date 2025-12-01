@@ -38,7 +38,7 @@ void	to_the_top_cost(t_node **stack)
 		if (current->index <= size / 2)
 			cost = current->index;
 		else
-			cost = current->index - size;
+			cost = size - current->index;  // ← FIXED: was (current->index - size)
 		current->to_top_cost = cost;
 		current = current->next;
 	}
