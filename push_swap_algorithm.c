@@ -7,27 +7,26 @@ void	sort_last_three(t_node **stack)
 	int	a;
 	int	b;
 	int	c;
-
 	if (!stack || !(*stack) || !(*stack)->next || !(*stack)->next->next)
 		return ;
 	a = (*stack)->value;
 	b = (*stack)->next->value;
 	c = (*stack)->next->next->value;
-	if (a > b && b < c && a < c)
+	if (a > b && b < c && a < c) // 2 1 3
 		s_stack(stack, "sa");
-	else if (a > b && b > c)
+	else if (a > b && b > c) // 3 2 1
 	{
 		s_stack(stack, "sa");
-		r_stack(stack, "rra");
+		rr_stack(stack, "rra");
 	}
-	else if (a > b && a > c)
+	else if (a > b && a > c && b < c) // 3 1 2
 		r_stack(stack, "ra");
-	else if (a < b && b > c && a < c)
+	else if (a < b && b > c && a < c) // 1 3 2
 	{
 		s_stack(stack, "sa");
 		r_stack(stack, "ra");
 	}
-	else if (a < b && b > c && a > c)
+	else if (a < b && b > c && a > c) // 2 3 1
 		rr_stack(stack, "rra");
 }
 
@@ -66,8 +65,15 @@ void	calculate_total_costs(t_node *b, t_node *a)
 	t_node	*target_in_a;
 	int		b_cost;
 	int		a_cost;
+	int		b_direction;
+	int		a_direction;
+	int		a_size;
+	int		b_size;
 
 	current_b = b;
+	a_size = get_stack_size(a);
+	b_size = get_stack_size(b);
+	
 	while (current_b)
 	{
 		b_cost = current_b->to_top_cost;
@@ -77,7 +83,12 @@ void	calculate_total_costs(t_node *b, t_node *a)
 		if (target_in_a)
 		{
 			a_cost = target_in_a->to_top_cost;
-			if ((b_cost > 0 && a_cost > 0) || (b_cost < 0 && a_cost < 0))
+			// Determine directions: up (rotate towards index 0), down (rotate away)
+			b_direction = (current_b->index <= b_size / 2) ? 1 : -1;
+			a_direction = (target_in_a->index <= a_size / 2) ? 1 : -1;
+			
+			// If both rotate in same direction, rotations can be optimized (use rr/rrr)
+			if (b_direction == a_direction)
 				current_b->final_to_top_cost = ft_fmax(ft_abs(b_cost), ft_abs(a_cost));
 			else
 				current_b->final_to_top_cost = ft_abs(b_cost) + ft_abs(a_cost);
@@ -125,20 +136,28 @@ void	push_swap(t_node **a, t_node **b)
 		sort_last_three(a);
 	else
 	{
+		// Push all but 3 elements to B
 		while (get_stack_size(*a) > 3)
 			p_stack(b, a, "pb");
+		
+		// Sort remaining 3 in A
 		sort_last_three(a);
+		
+		// Push all from B back to A in sorted order
 		while (*b)
 		{
+			// Recalculate indices and costs before each move
 			put_pointer_at_start_and_asign_indexs(a);
-			put_pointer_at_start_and_asign_indexs(b); 
+			put_pointer_at_start_and_asign_indexs(b);
+			
 			find_target_node(a, b);
 			to_the_top_cost(a);
 			to_the_top_cost(b);
 			calculate_total_costs(*b, *a);
 			execute_cheapest_move(a, b);
 		}
+		
+		// Final rotation to put smallest at top
 		final_sort(a);
 	}
 }
-// continue this article https://pure-forest.medium.com/push-swap-turk-algorithm-explained-in-6-steps-4c6650a458c0

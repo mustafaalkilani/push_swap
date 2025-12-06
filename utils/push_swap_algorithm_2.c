@@ -1,5 +1,5 @@
 #include "../push_swap.h"
-
+#include "../ft_printf/ft_printf.h"
 t_node	*find_cheapest(t_node *b)
 {
 	t_node	*cheapest;
@@ -88,20 +88,24 @@ void	rotate_target_to_top(t_node **a, int target_value)
 void	rotate_both_stacks(t_node **a, t_node **b, t_node *cheapest,
 		t_node *target_node)
 {
-	int	b_rotate_up;
-	int	a_rotate_up;
+	int	b_size;
+	int	a_size;
 
-	b_rotate_up = (cheapest->index <= get_stack_size(*b) / 2);
-	a_rotate_up = (target_node->index <= get_stack_size(*a) / 2);
-	while (b_rotate_up && a_rotate_up && (*b)->value != cheapest->value
-		&& (*a)->value != target_node->value)
+	b_size = get_stack_size(*b);
+	a_size = get_stack_size(*a);
+	
+	// Rotate both up until one reaches target
+	while ((*b)->value != cheapest->value && (*a)->value != target_node->value
+		&& cheapest->index <= b_size / 2 && target_node->index <= a_size / 2)
 	{
 		rr(a, b);
 		put_pointer_at_start_and_asign_indexs(a);
 		put_pointer_at_start_and_asign_indexs(b);
 	}
-	while (!b_rotate_up && !a_rotate_up && (*b)->value != cheapest->value
-		&& (*a)->value != target_node->value)
+	
+	// Rotate both down until one reaches target
+	while ((*b)->value != cheapest->value && (*a)->value != target_node->value
+		&& cheapest->index > b_size / 2 && target_node->index > a_size / 2)
 	{
 		rrr(a, b);
 		put_pointer_at_start_and_asign_indexs(a);
