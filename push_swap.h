@@ -34,6 +34,10 @@ void				ft_node_add_back(t_node **lst, t_node *new);
 t_node				*ft_node_new(int value);
 int					ft_abs(int num);
 int					ft_fmax(int a, int b);
+t_node				*find_node_by_value(t_node *stack, int value);
+void				set_final_cost(t_node *curr_b, t_node *target_a, int b_dir,
+						int a_dir);
+void				set_direction(t_node *node, int size, int *direction);
 int					get_stack_size(t_node *stack);
 void				to_the_top_cost(t_node **stack);
 t_node				*find_cheapest(t_node *b);

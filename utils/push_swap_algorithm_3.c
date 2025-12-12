@@ -1,8 +1,12 @@
 #include "../ft_printf/ft_printf.h"
 #include "../push_swap.h"
 
-// Add this debug version of execute_cheapest_move to your code
-// Replace your current execute_cheapest_move with this
+t_node	*find_node_by_value(t_node *stack, int value)
+{
+	while (stack && stack->value != value)
+		stack = stack->next;
+	return (stack);
+}
 
 void	execute_cheapest_move(t_node **a, t_node **b)
 {
@@ -20,7 +24,6 @@ void	execute_cheapest_move(t_node **a, t_node **b)
 	if (!target_node)
 		return ;
 	rotate_both_stacks(a, b, cheapest, target_node);
-	// Rotate B to get cheapest to top
 	while ((*b)->value != cheapest->value)
 	{
 		if (cheapest->index <= get_stack_size(*b) / 2)
@@ -29,7 +32,24 @@ void	execute_cheapest_move(t_node **a, t_node **b)
 			rr_stack(b, "rrb");
 		put_pointer_at_start_and_asign_indexs(b);
 	}
-	// Rotate A to get target to top
 	rotate_target_to_top(a, cheapest->target);
 	p_stack(a, b, "pa");
+}
+
+void	set_final_cost(t_node *curr_b, t_node *target_a, int b_dir, int a_dir)
+{
+	if (b_dir == a_dir)
+		curr_b->final_to_top_cost = ft_fmax(ft_abs(curr_b->to_top_cost),
+				ft_abs(target_a->to_top_cost));
+	else
+		curr_b->final_to_top_cost = ft_abs(curr_b->to_top_cost)
+			+ ft_abs(target_a->to_top_cost);
+}
+
+void	set_direction(t_node *node, int size, int *direction)
+{
+	if (node->index <= size / 2)
+		*direction = 1;
+	else
+		*direction = -1;
 }

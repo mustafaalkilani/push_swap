@@ -13,21 +13,21 @@ void	sort_last_three(t_node **stack)
 	a = (*stack)->value;
 	b = (*stack)->next->value;
 	c = (*stack)->next->next->value;
-	if (a > b && b < c && a < c) // 2 1 3
+	if (a > b && b < c && a < c)
 		s_stack(stack, "sa");
-	else if (a > b && b > c) // 3 2 1
+	else if (a > b && b > c)
 	{
 		s_stack(stack, "sa");
 		rr_stack(stack, "rra");
 	}
-	else if (a > b && a > c && b < c) // 3 1 2
+	else if (a > b && a > c && b < c)
 		r_stack(stack, "ra");
-	else if (a < b && b > c && a < c) // 1 3 2
+	else if (a < b && b > c && a < c)
 	{
 		s_stack(stack, "sa");
 		r_stack(stack, "ra");
 	}
-	else if (a < b && b > c && a > c) // 2 3 1
+	else if (a < b && b > c && a > c)
 		rr_stack(stack, "rra");
 }
 
@@ -62,40 +62,22 @@ void	find_target_node(t_node **a, t_node **b)
 
 void	calculate_total_costs(t_node *b, t_node *a)
 {
-	t_node	*current_b;
-	t_node	*target_in_a;
-	int		b_cost;
-	int		a_cost;
-	int		b_direction;
-	int		a_direction;
-	int		a_size;
-	int		b_size;
+	t_node	*curr_b;
+	t_node	*target_a;
+	int		b_dir;
+	int		a_dir;
 
-	current_b = b;
-	a_size = get_stack_size(a);
-	b_size = get_stack_size(b);
-	while (current_b)
+	curr_b = b;
+	while (curr_b)
 	{
-		b_cost = current_b->to_top_cost;
-		target_in_a = a;
-		while (target_in_a && target_in_a->value != current_b->target)
-			target_in_a = target_in_a->next;
-		if (target_in_a)
+		target_a = find_node_by_value(a, curr_b->target);
+		if (target_a)
 		{
-			a_cost = target_in_a->to_top_cost;
-			// Determine directions: up (rotate towards index 0),
-				down (rotate away)
-			b_direction = (current_b->index <= b_size / 2) ? 1 : -1;
-			a_direction = (target_in_a->index <= a_size / 2) ? 1 : -1;
-			// If both rotate in same direction,
-				rotations can be optimized (use rr/rrr)
-			if (b_direction == a_direction)
-				current_b->final_to_top_cost = ft_fmax(ft_abs(b_cost),
-						ft_abs(a_cost));
-			else
-				current_b->final_to_top_cost = ft_abs(b_cost) + ft_abs(a_cost);
+			set_direction(curr_b, get_stack_size(b), &b_dir);
+			set_direction(target_a, get_stack_size(a), &a_dir);
+			set_final_cost(curr_b, target_a, b_dir, a_dir);
 		}
-		current_b = current_b->next;
+		curr_b = curr_b->next;
 	}
 }
 
@@ -138,15 +120,11 @@ void	push_swap(t_node **a, t_node **b)
 		sort_last_three(a);
 	else
 	{
-		// Push all but 3 elements to B
 		while (get_stack_size(*a) > 3)
 			p_stack(b, a, "pb");
-		// Sort remaining 3 in A
 		sort_last_three(a);
-		// Push all from B back to A in sorted order
 		while (*b)
 		{
-			// Recalculate indices and costs before each move
 			put_pointer_at_start_and_asign_indexs(a);
 			put_pointer_at_start_and_asign_indexs(b);
 			find_target_node(a, b);
@@ -155,7 +133,6 @@ void	push_swap(t_node **a, t_node **b)
 			calculate_total_costs(*b, *a);
 			execute_cheapest_move(a, b);
 		}
-		// Final rotation to put smallest at top
 		final_sort(a);
 	}
 }

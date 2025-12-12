@@ -6,6 +6,7 @@ void	error_exit(void)
 	ft_putstr_fd("Error\n", 2);
 	exit(1);
 }
+
 static int	is_valid_number(const char *str)
 {
 	int	i;
@@ -29,9 +30,9 @@ static int	is_valid_number(const char *str)
 
 long	ft_atol(const char *nptr)
 {
-	long num;
-	int i;
-	int sign;
+	long	num;
+	int		i;
+	int		sign;
 
 	if (!is_valid_number(nptr))
 		error_exit();

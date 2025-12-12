@@ -39,8 +39,7 @@ void	to_the_top_cost(t_node **stack)
 		if (current->index <= size / 2)
 			cost = current->index;
 		else
-			cost = size - current->index; // ← FIXED: was (current->index
-					- size)
+			cost = size - current->index;
 		current->to_top_cost = cost;
 		current = current->next;
 	}
@@ -95,7 +94,6 @@ void	rotate_both_stacks(t_node **a, t_node **b, t_node *cheapest,
 
 	b_size = get_stack_size(*b);
 	a_size = get_stack_size(*a);
-	// Rotate both up until one reaches target
 	while ((*b)->value != cheapest->value && (*a)->value != target_node->value
 		&& cheapest->index <= b_size / 2 && target_node->index <= a_size / 2)
 	{
@@ -103,7 +101,6 @@ void	rotate_both_stacks(t_node **a, t_node **b, t_node *cheapest,
 		put_pointer_at_start_and_asign_indexs(a);
 		put_pointer_at_start_and_asign_indexs(b);
 	}
-	// Rotate both down until one reaches target
 	while ((*b)->value != cheapest->value && (*a)->value != target_node->value
 		&& cheapest->index > b_size / 2 && target_node->index > a_size / 2)
 	{
