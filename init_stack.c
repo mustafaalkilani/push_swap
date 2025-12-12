@@ -2,7 +2,7 @@
 #include "libft/libft.h"
 #include "push_swap.h"
 
-static void	free_and_exit(t_node **stack, t_node *new_node)
+void	free_and_exit(t_node **stack, t_node *new_node)
 {
 	t_node	*temp;
 
@@ -63,8 +63,8 @@ void	put_pointer_at_start_and_asign_indexs(t_node **stack)
 void	init_stack(t_node **stack, char **argv)
 {
 	int		i;
-
 	t_node	*new_node;
+
 	i = -1;
 	while (argv[++i])
 	{

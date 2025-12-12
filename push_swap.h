@@ -17,6 +17,8 @@ typedef struct s_node
 }					t_node;
 void				free_stack(t_node **stack);
 void				init_stack(t_node **a, char **argv);
+void				free_and_exit(t_node **stack, t_node *new_node);
+void				error_exit(void);
 void				s_stack(t_node **stack, char *operation);
 void				ss(t_node **a, t_node **b);
 long				ft_atol(const char *nptr);
@@ -40,8 +42,8 @@ void				rotate_both_stacks(t_node **a, t_node **b, t_node *cheapest,
 						t_node *target_node);
 void				execute_cheapest_move(t_node **a, t_node **b);
 void				push_swap(t_node **a, t_node **b);
-void	final_sort(t_node **a);
-void	find_target_node(t_node **a, t_node **b);
-void	calculate_total_costs(t_node *b, t_node *a);
-void	sort_last_three(t_node **a);
+void				final_sort(t_node **a);
+void				find_target_node(t_node **a, t_node **b);
+void				calculate_total_costs(t_node *b, t_node *a);
+void				sort_last_three(t_node **a);
 #endif

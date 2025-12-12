@@ -7,6 +7,7 @@ void	sort_last_three(t_node **stack)
 	int	a;
 	int	b;
 	int	c;
+
 	if (!stack || !(*stack) || !(*stack)->next || !(*stack)->next->next)
 		return ;
 	a = (*stack)->value;
@@ -73,7 +74,6 @@ void	calculate_total_costs(t_node *b, t_node *a)
 	current_b = b;
 	a_size = get_stack_size(a);
 	b_size = get_stack_size(b);
-	
 	while (current_b)
 	{
 		b_cost = current_b->to_top_cost;
@@ -83,13 +83,15 @@ void	calculate_total_costs(t_node *b, t_node *a)
 		if (target_in_a)
 		{
 			a_cost = target_in_a->to_top_cost;
-			// Determine directions: up (rotate towards index 0), down (rotate away)
+			// Determine directions: up (rotate towards index 0),
+				down (rotate away)
 			b_direction = (current_b->index <= b_size / 2) ? 1 : -1;
 			a_direction = (target_in_a->index <= a_size / 2) ? 1 : -1;
-			
-			// If both rotate in same direction, rotations can be optimized (use rr/rrr)
+			// If both rotate in same direction,
+				rotations can be optimized (use rr/rrr)
 			if (b_direction == a_direction)
-				current_b->final_to_top_cost = ft_fmax(ft_abs(b_cost), ft_abs(a_cost));
+				current_b->final_to_top_cost = ft_fmax(ft_abs(b_cost),
+						ft_abs(a_cost));
 			else
 				current_b->final_to_top_cost = ft_abs(b_cost) + ft_abs(a_cost);
 		}
@@ -139,24 +141,20 @@ void	push_swap(t_node **a, t_node **b)
 		// Push all but 3 elements to B
 		while (get_stack_size(*a) > 3)
 			p_stack(b, a, "pb");
-		
 		// Sort remaining 3 in A
 		sort_last_three(a);
-		
 		// Push all from B back to A in sorted order
 		while (*b)
 		{
 			// Recalculate indices and costs before each move
 			put_pointer_at_start_and_asign_indexs(a);
 			put_pointer_at_start_and_asign_indexs(b);
-			
 			find_target_node(a, b);
 			to_the_top_cost(a);
 			to_the_top_cost(b);
 			calculate_total_costs(*b, *a);
 			execute_cheapest_move(a, b);
 		}
-		
 		// Final rotation to put smallest at top
 		final_sort(a);
 	}
