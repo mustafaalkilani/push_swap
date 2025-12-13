@@ -1,5 +1,5 @@
-#include "../ft_printf/ft_printf.h"
 #include "../push_swap.h"
+#include "../libft/libft.h"
 
 void	rr_stack(t_node **stack, char *operation)
 {
@@ -20,12 +20,16 @@ void	rr_stack(t_node **stack, char *operation)
 	second_last->next = NULL;
 	*stack = last;
 	if (operation)
-		ft_printf("%s\n", operation);
+	{
+			ft_putstr_fd(operation, 1);
+			ft_putchar_fd('\n', 1);
+	}
 }
 
 void	rrr(t_node **a, t_node **b)
 {
 	rr_stack(a, NULL);
 	rr_stack(b, NULL);
-	ft_printf("rrr\n");
+	ft_putstr_fd("rrr", 1);
+	ft_putchar_fd('\n', 1);
 }

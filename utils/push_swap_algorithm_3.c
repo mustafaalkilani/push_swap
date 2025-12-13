@@ -1,4 +1,3 @@
-#include "../ft_printf/ft_printf.h"
 #include "../push_swap.h"
 
 t_node	*find_node_by_value(t_node *stack, int value)

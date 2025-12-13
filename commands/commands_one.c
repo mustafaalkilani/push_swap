@@ -1,5 +1,5 @@
-#include "../ft_printf/ft_printf.h"
 #include "../push_swap.h"
+#include "../libft/libft.h"
 
 void	s_stack(t_node **stack, char *operation)
 {
@@ -20,14 +20,19 @@ void	s_stack(t_node **stack, char *operation)
 		third->prev = first;
 	*stack = second;
 	if (operation)
-		ft_printf("%s\n", operation);
+	{
+			ft_putstr_fd(operation, 1);
+			ft_putchar_fd('\n', 1);
+	}
+
 }
 
 void	ss(t_node **a, t_node **b)
 {
 	s_stack(a, NULL);
 	s_stack(b, NULL);
-	ft_printf("ss\n");
+	ft_putstr_fd("ss", 1);
+	ft_putchar_fd('\n', 1);
 }
 
 void	r_stack(t_node **stack, char *operation)
@@ -47,14 +52,18 @@ void	r_stack(t_node **stack, char *operation)
 	(*stack)->prev = NULL;
 	last->next->next = NULL;
 	if (operation)
-		ft_printf("%s\n", operation);
+	{
+		ft_putstr_fd(operation, 1);
+		ft_putchar_fd('\n', 1);
+	}
 }
 
 void	rr(t_node **a, t_node **b)
 {
 	r_stack(a, NULL);
 	r_stack(b, NULL);
-	ft_printf("rr\n");
+	ft_putstr_fd("rr", 1);
+	ft_putchar_fd('\n', 1);
 }
 
 void	p_stack(t_node **stack_to, t_node **stack_from, char *operation)
@@ -73,5 +82,8 @@ void	p_stack(t_node **stack_to, t_node **stack_from, char *operation)
 		(*stack_to)->prev = temp;
 	*stack_to = temp;
 	if (operation)
-		ft_printf("%s\n", operation);
+	{
+		ft_putstr_fd(operation, 1);
+		ft_putchar_fd('\n', 1);
+	}
 }
