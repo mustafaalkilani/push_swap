@@ -40,5 +40,5 @@ void execute_instruction(char *command, t_node **a, t_node **b)
     else if (ft_strncmp(command, "rrr\n", 4) == 0)
         rrr(a, b);
     else
-        error_exit(a, b, command);
+        error_exit(&a, &b, &command);
 }
