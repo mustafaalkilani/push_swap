@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:13:57 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:18:11 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/14 17:20:08 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	validate_and_add(t_node **stack, t_node *new_node, char *arg)
 	long	value;
 
 	value = ft_atol(arg);
-	if (value == LLONG_MAX || !(value > INT_MAX || value < INT_MIN))
+	if (value == LLONG_MAX || (value > INT_MAX || value < INT_MIN))
 		free_and_exit(stack, new_node);
 	new_node->value = (int)value;
 	if (handle_repetitions(*stack, new_node->value))
