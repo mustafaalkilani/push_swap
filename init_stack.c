@@ -24,13 +24,26 @@ void	free_and_exit(t_node **stack, t_node *new_node)
 
 static int	handle_repetitions(t_node *stack, int value)
 {
-	while (stack)
+	t_node	*current;
+	t_node	*temp;
+
+	if (!stack)
+		return (0);
+	while (stack->prev)
+		stack = stack->prev;
+	current = stack;
+	while (current)
 	{
-		if (stack->value == value)
-			return (0);
-		stack = stack->next;
+		temp = current;
+		while (temp)
+		{
+			if (temp->value == value && temp != current)
+				return (1);
+			temp = temp->next;
+		}
+		current = current->next;
 	}
-	return (1);
+	return (0);
 }
 
 static int	handle_overflow(long value)
