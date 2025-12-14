@@ -3,6 +3,18 @@
 #include "../libft/libft.h"
 #include "./push_swap_bonus.h"
 
+void error_exit(t_node **a, t_node **b, char **commands)
+{
+    if (a)
+        free_stack(a);
+    if (b)
+        free_stack(b);
+    if (commands)
+        free_split(commands);
+    ft_putstr_fd("Error\n", 2);
+    exit(1);
+}
+
 void execute_instruction(char *command, t_node **a, t_node **b)
 {
     if (ft_strncmp(command, "sa\n", 3) == 0)
@@ -28,5 +40,5 @@ void execute_instruction(char *command, t_node **a, t_node **b)
     else if (ft_strncmp(command, "rrr\n", 4) == 0)
         rrr(a, b);
     else
-        error_exit();
+        error_exit(a, b, command);
 }
