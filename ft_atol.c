@@ -1,12 +1,6 @@
 #include "libft/libft.h"
 #include "push_swap.h"
 
-void	error_exit(void)
-{
-	ft_putstr_fd("Error\n", 2);
-	exit(1);
-}
-
 static int	is_valid_number(const char *str)
 {
 	int	i;
@@ -35,7 +29,7 @@ long	ft_atol(const char *nptr)
 	int		sign;
 
 	if (!is_valid_number(nptr))
-		error_exit();
+		return (LLONG_MAX);  // Return error flag, don't exit
 	num = 0;
 	i = 0;
 	sign = 1;

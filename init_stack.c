@@ -7,11 +7,16 @@ void	free_and_exit(t_node **stack, t_node *new_node)
 
 	if (new_node)
 		free(new_node);
-	while (*stack)
+	if (*stack)
 	{
-		temp = *stack;
-		*stack = (*stack)->next;
-		free(temp);
+		while ((*stack)->prev)
+			*stack = (*stack)->prev;
+		while (*stack)
+		{
+			temp = *stack;
+			*stack = (*stack)->next;
+			free(temp);
+		}
 	}
 	ft_putstr_fd("Error\n", 2);
 	exit(1);
@@ -19,44 +24,44 @@ void	free_and_exit(t_node **stack, t_node *new_node)
 
 static int	handle_repetitions(t_node *stack, int value)
 {
-	t_node	*current;
-
-	current = stack;
-	while (current != NULL)
+	while (stack)
 	{
-		if (current->value == value)
-		{
+		if (stack->value == value)
 			return (0);
-		}
-		current = current->prev;
+		stack = stack->next;
 	}
 	return (1);
 }
 
 static int	handle_overflow(long value)
 {
-	if (value > INT_MAX || value < INT_MIN)
-		return (0);
-	return (1);
+	return (!(value > INT_MAX || value < INT_MIN));
 }
 
-void	put_pointer_at_start_and_asign_indexs(t_node **stack)
+static void	add_node_to_stack(t_node **stack, t_node *new_node)
 {
-	int		index;
-	t_node	*temp;
-
-	if (!stack || !*stack)
-		return ;
-	index = 0;
-	while ((*stack)->prev)
-		*stack = (*stack)->prev;
-	temp = *stack;
-	while (temp)
+	if (*stack == NULL)
+		*stack = new_node;
+	else
 	{
-		temp->index = index;
-		index++;
-		temp = temp->next;
+		(*stack)->next = new_node;
+		new_node->prev = *stack;
+		*stack = new_node;
 	}
+}
+
+static void	validate_and_add(t_node **stack, t_node *new_node, char *arg)
+{
+	long	value;
+
+	value = ft_atol(arg);
+	if (value == LLONG_MAX || !handle_overflow(value))
+		free_and_exit(stack, new_node);
+	new_node->value = (int)value;
+	if (!handle_repetitions(*stack, new_node->value))
+		free_and_exit(stack, new_node);
+	new_node->next = NULL;
+	add_node_to_stack(stack, new_node);
 }
 
 void	init_stack(t_node **stack, char **argv)
@@ -69,21 +74,8 @@ void	init_stack(t_node **stack, char **argv)
 	{
 		new_node = (t_node *)malloc(sizeof(t_node));
 		if (!new_node)
-			return (free_and_exit(stack, new_node));
-		if (!handle_overflow(ft_atol(argv[i])))
-			return (free_and_exit(stack, new_node));
-		new_node->value = ft_atoi(argv[i]);
-		if (!handle_repetitions(*stack, new_node->value))
-			return (free_and_exit(stack, new_node));
-		new_node->next = NULL;
-		if (*stack == NULL)
-			*stack = new_node;
-		else
-		{
-			(*stack)->next = new_node;
-			new_node->prev = *stack;
-			*stack = new_node;
-		}
+			free_and_exit(stack, new_node);
+		validate_and_add(stack, new_node, argv[i]);
 	}
 	put_pointer_at_start_and_asign_indexs(stack);
 }

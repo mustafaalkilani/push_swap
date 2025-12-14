@@ -52,3 +52,21 @@ void	set_direction(t_node *node, int size, int *direction)
 	else
 		*direction = -1;
 }
+
+void	put_pointer_at_start_and_asign_indexs(t_node **stack)
+{
+	int		index;
+	t_node	*temp;
+
+	if (!stack || !*stack)
+		return ;
+	while ((*stack)->prev)
+		*stack = (*stack)->prev;
+	temp = *stack;
+	index = 0;
+	while (temp)
+	{
+		temp->index = index++;
+		temp = temp->next;
+	}
+}
