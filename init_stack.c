@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_stack.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/14 17:13:57 by malkilan          #+#    #+#             */
+/*   Updated: 2025/12/14 17:18:11 by malkilan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft/libft.h"
 #include "push_swap.h"
 
@@ -26,6 +38,7 @@ static int	handle_repetitions(t_node *stack, int value)
 {
 	t_node	*current;
 	t_node	*temp;
+
 	if (!stack)
 		return (0);
 	while (stack->prev)
@@ -45,11 +58,6 @@ static int	handle_repetitions(t_node *stack, int value)
 	return (0);
 }
 
-static int	handle_overflow(long value)
-{
-	return (!(value > INT_MAX || value < INT_MIN));
-}
-
 static void	add_node_to_stack(t_node **stack, t_node *new_node)
 {
 	if (*stack == NULL)
@@ -65,8 +73,9 @@ static void	add_node_to_stack(t_node **stack, t_node *new_node)
 static void	validate_and_add(t_node **stack, t_node *new_node, char *arg)
 {
 	long	value;
+
 	value = ft_atol(arg);
-	if (value == LLONG_MAX || !handle_overflow(value))
+	if (value == LLONG_MAX || !(value > INT_MAX || value < INT_MIN))
 		free_and_exit(stack, new_node);
 	new_node->value = (int)value;
 	if (handle_repetitions(*stack, new_node->value))

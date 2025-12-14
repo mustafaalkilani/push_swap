@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/14 17:14:05 by malkilan          #+#    #+#             */
+/*   Updated: 2025/12/14 17:18:32 by malkilan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft/libft.h"
 #include "push_swap.h"
 
@@ -29,7 +41,7 @@ long	ft_atol(const char *nptr)
 	int		sign;
 
 	if (!is_valid_number(nptr))
-		return (LLONG_MAX);  // Return error flag, don't exit
+		return (LLONG_MAX);
 	num = 0;
 	i = 0;
 	sign = 1;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_functions.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/14 17:14:34 by malkilan          #+#    #+#             */
+/*   Updated: 2025/12/14 17:15:54 by malkilan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../push_swap.h"
 
 void	free_stack(t_node **stack)
@@ -13,6 +25,7 @@ void	free_stack(t_node **stack)
 		*stack = temp;
 	}
 }
+
 void	free_split(char **split)
 {
 	int	i;
@@ -27,6 +40,7 @@ void	free_split(char **split)
 	}
 	free(split);
 }
+
 int	is_sorted(t_node **stack, int should_free_argv, char **argv)
 {
 	t_node	*current;

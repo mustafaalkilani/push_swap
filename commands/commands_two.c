@@ -1,5 +1,17 @@
-#include "../push_swap.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands_two.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/14 17:15:00 by malkilan          #+#    #+#             */
+/*   Updated: 2025/12/14 17:15:02 by malkilan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
+#include "../push_swap.h"
 
 void	rr_stack(t_node **stack, char *operation)
 {
@@ -21,8 +33,8 @@ void	rr_stack(t_node **stack, char *operation)
 	*stack = last;
 	if (operation)
 	{
-			ft_putstr_fd(operation, 1);
-			ft_putchar_fd('\n', 1);
+		ft_putstr_fd(operation, 1);
+		ft_putchar_fd('\n', 1);
 	}
 }
 
