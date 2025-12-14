@@ -26,7 +26,6 @@ static int	handle_repetitions(t_node *stack, int value)
 {
 	t_node	*current;
 	t_node	*temp;
-
 	if (!stack)
 		return (0);
 	while (stack->prev)
@@ -34,7 +33,7 @@ static int	handle_repetitions(t_node *stack, int value)
 	current = stack;
 	while (current)
 	{
-		temp = current;
+		temp = stack;
 		while (temp)
 		{
 			if (temp->value == value && temp != current)
@@ -66,12 +65,11 @@ static void	add_node_to_stack(t_node **stack, t_node *new_node)
 static void	validate_and_add(t_node **stack, t_node *new_node, char *arg)
 {
 	long	value;
-
 	value = ft_atol(arg);
 	if (value == LLONG_MAX || !handle_overflow(value))
 		free_and_exit(stack, new_node);
 	new_node->value = (int)value;
-	if (!handle_repetitions(*stack, new_node->value))
+	if (handle_repetitions(*stack, new_node->value))
 		free_and_exit(stack, new_node);
 	new_node->next = NULL;
 	add_node_to_stack(stack, new_node);

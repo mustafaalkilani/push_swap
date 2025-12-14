@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	}
 	if (!should_free_argv)
 		argv++;
-	init_stack(&a, argv);  // Much simpler
+	init_stack(&a, argv);
 	if (is_sorted(&a, should_free_argv, argv))
 		return (0);
 	push_swap(&a, &b);
