@@ -81,6 +81,11 @@ static void	validate_and_add(t_node **stack, t_node *new_node, char *arg)
 	if (handle_repetitions(*stack, new_node->value))
 		free_and_exit(stack, new_node);
 	new_node->next = NULL;
+	new_node->prev = NULL;
+	new_node->index = 0;
+	new_node->to_top_cost = 0;
+	new_node->final_to_top_cost = 0;
+	new_node->target = 0;
 	add_node_to_stack(stack, new_node);
 }
 

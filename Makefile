@@ -10,7 +10,6 @@ BONUS_SRCS = bonus/checker_bonus.c bonus/checker_instructions_bonus.c bonus/chec
 		utils/ft_node_add_new.c utils/push_swap_algorithm_2.c utils/math_utils.c \
 		utils/push_swap_algorithm_3.c push_swap_algorithm.c get_next_line/get_next_line.c \
 		get_next_line/get_next_line_utils.c utils/utils_functions.c
-BONUS_FILE = .bonus.txt
 OBJS = $(SRCS:.c=.o)
 OBJS_BONUS = $(BONUS_SRCS:.c=.o)
 libft_DIR = libft
@@ -27,7 +26,6 @@ bonus: $(BONUS_NAME)
 $(BONUS_NAME): $(OBJS_BONUS)
 	$(MAKE) -C $(libft_DIR)
 	$(CC) $(CFLAGS) $(OBJS_BONUS) $(libft_LIB) -o $(BONUS_NAME)
-	touch $(BONUS_FILE)
 
 clean:
 	rm -f $(OBJS) $(OBJS_BONUS) $(BONUS_FILE)
