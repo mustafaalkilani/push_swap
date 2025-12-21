@@ -6,14 +6,14 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:14:05 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:18:32 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:21:54 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "push_swap.h"
 
-static int	is_valid_number(const char *str)
+int	is_valid_number(const char *str)
 {
 	int	i;
 	int	has_digit;

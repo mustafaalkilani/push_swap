@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:14:34 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:15:54 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:17:10 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,7 @@ void	free_stack(t_node **stack)
 	}
 }
 
-void	free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	if (!split)
-		return ;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
-int	is_sorted(t_node **stack, int should_free_argv, char **argv)
+int	is_sorted(t_node **stack)
 {
 	t_node	*current;
 
@@ -55,7 +40,5 @@ int	is_sorted(t_node **stack, int should_free_argv, char **argv)
 			return (0);
 		current = current->next;
 	}
-	if (should_free_argv)
-		free_split(argv);
 	return (1);
 }

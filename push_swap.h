@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:14:24 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:14:26 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:22:04 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ typedef struct s_node
 void				free_stack(t_node **stack);
 void				init_stack(t_node **stack, char **argv);
 void				free_split(char **split);
-int					is_sorted(t_node **stack, int should_free_argv,
-						char **argv);
+int					is_sorted(t_node **stack);
 void				free_and_exit(t_node **stack, t_node *new_node);
 void				s_stack(t_node **stack, char *operation);
 void				ss(t_node **a, t_node **b);
@@ -64,5 +63,6 @@ void				final_sort(t_node **a);
 void				find_target_node(t_node **a, t_node **b);
 void				calculate_total_costs(t_node *b, t_node *a);
 void				sort_last_three(t_node **a);
+int					is_valid_number(const char *str);
 
 #endif

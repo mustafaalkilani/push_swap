@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:14:10 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:14:12 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:36:34 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,19 @@
 
 int	main(int argc, char **argv)
 {
-	int		should_free_argv;
 	t_node	*a;
 	t_node	*b;
 
 	a = NULL;
 	b = NULL;
-	should_free_argv = 0;
-	if (argc == 1 || argv[1][0] == '\0')
+	if (argc == 1 || argv[1][0] == '\0' ||
+		(argc == 2 && is_valid_number(argv[1])))
 		return (0);
-	if (argc == 2)
-	{
-		argv = ft_split(argv[1], ' ');
-		should_free_argv = 1;
-	}
-	if (!should_free_argv)
-		argv++;
-	init_stack(&a, argv);
-	if (is_sorted(&a, should_free_argv, argv))
+	init_stack(&a, argv + 1);
+	if (is_sorted(&a))
 		return (0);
 	push_swap(&a, &b);
 	free_stack(&a);
 	free_stack(&b);
-	if (should_free_argv)
-		free_split(argv);
 	return (0);
 }
