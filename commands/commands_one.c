@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:15:05 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:15:07 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:18:47 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ void	s_stack(t_node **stack, char *operation)
 	}
 }
 
-void	ss(t_node **a, t_node **b)
+void	ss(t_node **a, t_node **b, int flag)
 {
 	s_stack(a, NULL);
 	s_stack(b, NULL);
-	ft_putstr_fd("ss", 1);
-	ft_putchar_fd('\n', 1);
+	if (flag)
+	{
+		ft_putstr_fd("ss", 1);
+		ft_putchar_fd('\n', 1);	
+	}
 }
 
 void	r_stack(t_node **stack, char *operation)
@@ -69,12 +72,15 @@ void	r_stack(t_node **stack, char *operation)
 	}
 }
 
-void	rr(t_node **a, t_node **b)
+void	rr(t_node **a, t_node **b, int flag)
 {
 	r_stack(a, NULL);
 	r_stack(b, NULL);
-	ft_putstr_fd("rr", 1);
-	ft_putchar_fd('\n', 1);
+	if (flag)
+	{
+		ft_putstr_fd("rr", 1);
+		ft_putchar_fd('\n', 1);
+	}
 }
 
 void	p_stack(t_node **stack_to, t_node **stack_from, char *operation)

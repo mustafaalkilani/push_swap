@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:15:00 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:15:02 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:19:01 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ void	rr_stack(t_node **stack, char *operation)
 	}
 }
 
-void	rrr(t_node **a, t_node **b)
+void	rrr(t_node **a, t_node **b, int flag)
 {
 	rr_stack(a, NULL);
 	rr_stack(b, NULL);
-	ft_putstr_fd("rrr", 1);
-	ft_putchar_fd('\n', 1);
+	if (flag)
+	{
+		ft_putstr_fd("rrr", 1);
+		ft_putchar_fd('\n', 1);
+	}
 }

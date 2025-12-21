@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:14:24 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/21 14:22:04 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:19:27 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ typedef struct s_node
 }					t_node;
 void				free_stack(t_node **stack);
 void				init_stack(t_node **stack, char **argv);
-void				free_split(char **split);
 int					is_sorted(t_node **stack);
 void				free_and_exit(t_node **stack, t_node *new_node);
 void				s_stack(t_node **stack, char *operation);
-void				ss(t_node **a, t_node **b);
+void				ss(t_node **a, t_node **b, int flag);
 long				ft_atol(const char *nptr);
 void				put_pointer_at_start_and_asign_indexs(t_node **stack);
 void				s_stack(t_node **stack, char *operation);
@@ -41,8 +40,8 @@ void				r_stack(t_node **stack, char *operation);
 void				rr_stack(t_node **stack, char *operation);
 void				p_stack(t_node **stack_to, t_node **stack_from,
 						char *operation);
-void				rrr(t_node **a, t_node **b);
-void				rr(t_node **a, t_node **b);
+void				rrr(t_node **a, t_node **b, int flag);
+void				rr(t_node **a, t_node **b, int flag);
 void				ft_node_add_back(t_node **lst, t_node *new);
 t_node				*ft_node_new(int value);
 int					ft_abs(int num);

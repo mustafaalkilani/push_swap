@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:14:43 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/14 17:14:45 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:21:18 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ void	rotate_both_stacks(t_node **a, t_node **b, t_node *cheapest,
 	while ((*b)->value != cheapest->value && (*a)->value != target_node->value
 		&& cheapest->index <= b_size / 2 && target_node->index <= a_size / 2)
 	{
-		rr(a, b);
+		rr(a, b, 1);
 		put_pointer_at_start_and_asign_indexs(a);
 		put_pointer_at_start_and_asign_indexs(b);
 	}
 	while ((*b)->value != cheapest->value && (*a)->value != target_node->value
 		&& cheapest->index > b_size / 2 && target_node->index > a_size / 2)
 	{
-		rrr(a, b);
+		rrr(a, b, 1);
 		put_pointer_at_start_and_asign_indexs(a);
 		put_pointer_at_start_and_asign_indexs(b);
 	}

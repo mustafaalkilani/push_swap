@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:14:34 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/21 14:17:10 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:17:35 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ int	is_sorted(t_node **stack)
 			return (0);
 		current = current->next;
 	}
+	free_stack(stack);
 	return (1);
 }
