@@ -45,7 +45,7 @@ void	ss(t_node **a, t_node **b, int flag)
 	if (flag)
 	{
 		ft_putstr_fd("ss", 1);
-		ft_putchar_fd('\n', 1);	
+		ft_putchar_fd('\n', 1);
 	}
 }
 

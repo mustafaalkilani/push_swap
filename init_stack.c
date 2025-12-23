@@ -6,7 +6,7 @@
 /*   By: malkilan <malkilan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:13:57 by malkilan          #+#    #+#             */
-/*   Updated: 2025/12/21 14:25:22 by malkilan         ###   ########.fr       */
+/*   Updated: 2025/12/23 13:19:39 by malkilan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_and_exit(t_node **stack, t_node *new_node)
 
 	if (new_node)
 		free(new_node);
-	if (*stack)
+	if (stack && *stack)
 	{
 		while ((*stack)->prev)
 			*stack = (*stack)->prev;
@@ -37,7 +37,6 @@ void	free_and_exit(t_node **stack, t_node *new_node)
 static int	handle_repetitions(t_node *stack, int value)
 {
 	t_node	*current;
-	t_node	*temp;
 
 	if (!stack)
 		return (0);
@@ -46,13 +45,8 @@ static int	handle_repetitions(t_node *stack, int value)
 	current = stack;
 	while (current)
 	{
-		temp = stack;
-		while (temp)
-		{
-			if (temp->value == value && temp != current)
-				return (1);
-			temp = temp->next;
-		}
+		if (current->value == value)
+			return (1);
 		current = current->next;
 	}
 	return (0);
@@ -76,7 +70,9 @@ static void	validate_and_add(t_node **stack, t_node *new_node, char *arg)
 
 	value = ft_atol(arg);
 	if (value == LLONG_MAX || (value > INT_MAX || value < INT_MIN))
+	{
 		free_and_exit(stack, new_node);
+	}
 	new_node->value = (int)value;
 	if (handle_repetitions(*stack, new_node->value))
 		free_and_exit(stack, new_node);
